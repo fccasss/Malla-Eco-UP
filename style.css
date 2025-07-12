@@ -1,19 +1,16 @@
-/* Fondo y fuente general */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #fff0f5;
+  background: #d3daf5;
   margin: 0;
   padding: 20px;
   text-align: center;
 }
 
-/* Título principal */
 h1 {
-  color: #c71585;
+  color: #26597a;
   margin-bottom: 40px;
 }
 
-/* Contenedor de semestres */
 .container {
   display: flex;
   justify-content: center;
@@ -21,24 +18,21 @@ h1 {
   gap: 40px;
 }
 
-/* Contenedor de cada semestre */
 .semester {
-  background: #ffe4ec;
+  background: #80b0d1;
   padding: 20px;
   border-radius: 15px;
   width: 220px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Título del semestre */
 .semester h2 {
-  color: #c2185b;
+  color: #496aa3;
   margin-bottom: 15px;
 }
 
-/* Estilo de los cursos */
 .course {
-  background: #f06292;
+  background: #568da8;
   color: white;
   margin: 10px 0;
   padding: 12px;
@@ -49,20 +43,18 @@ h1 {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Efecto al pasar el mouse */
 .course:hover {
   transform: scale(1.03);
 }
 
-/* Curso completado */
 .course.completed {
-  background: #81c784; /* verde claro */
+  background: #81c7bd; /* verde agua */
   color: white;
   cursor: default;
   box-shadow: none;
+  text-decoration: line-through;
 }
 
-/* Curso bloqueado */
 .course.locked {
   background: #d3d3d3;
   color: #666;
