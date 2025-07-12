@@ -38,23 +38,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const creditMet = totalCredits >= reqCredits;
 
-      // ✅ CORREGIDO: No volver a bloquear un curso que ya está completado
-      if (!isCompleted) {
-        if (prereqsMet && creditMet) {
-          course.classList.remove("locked");
-        } else {
-          course.classList.add("locked");
+      // ✅ Si no cumple requisitos, desmarcar y bloquear
+      if (!prereqsMet || !creditMet) {
+        if (isCompleted) {
+          course.classList.remove("completed");
         }
+        course.classList.add("locked");
+        return;
       }
 
-      // Si ya no cumple, desmarcar el curso
-      if (( !prereqsMet || !creditMet ) && isCompleted) {
-        course.classList.remove("completed");
+      // ✅ Si cumple requisitos y no está completado, desbloquear
+      if (!isCompleted) {
+        course.classList.remove("locked");
       }
     });
   }
 
-  // ✅ Permitir quitar "completed" aunque esté "locked"
+  // ✅ Permitir marcar/desmarcar si no está bloqueado o si ya está completado
   courses.forEach(course => {
     course.addEventListener("click", () => {
       if (course.classList.contains("locked") && !course.classList.contains("completed")) return;
@@ -63,6 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Al iniciar
+  // ✅ Evaluar desbloqueos al iniciar
   updateUnlocking();
 });
