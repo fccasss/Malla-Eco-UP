@@ -9,7 +9,7 @@
 <body>
   <h1>Malla Curricular - Economía</h1>
   <div class="container">
-   
+
   <div class="semester">
     <h2>Ciclo Cero</h2>
     <div class="course" data-id="nivelacion_en_matematicas">Nivelación en Matemáticas (ECO 0)</div>
@@ -19,10 +19,18 @@
 
   <div class="semester">
     <h2>1° Semestre</h2>
-    <div class="course" data-id="economia_general_i">Economía General I (ECO 5)</div>
-    <div class="course" data-id="matematicas_i">Matemáticas I (ECO 5)</div>
-    <div class="course" data-id="lenguaje_i">Lenguaje I (HUM 4)</div>
+    <div class="course locked" data-id="economia_general_i" data-prereq="nivelacion_en_matematicas">Economía General I (ECO 5)</div>
+    <div class="course locked" data-id="matematicas_i" data-prereq="nivelacion_en_matematicas">Matemáticas I (ECO 5)</div>
+    <div class="course locked" data-id="lenguaje_i" data-prereq="nivelacion_en_lenguaje">Lenguaje I (HUM 4)</div>
     <div class="course" data-id="fundamentos_de_contabilidad">Fundamentos de Contabilidad (CON 4)</div>
+  </div>
+
+  <div class="semester">
+    <h2>2° Semestre</h2>
+    <div class="course locked" data-id="economia_general_ii" data-prereq="economia_general_i">Economía General II (ECO 5)</div>
+    <div class="course locked" data-id="matematicas_ii" data-prereq="matematicas_i">Matemáticas II (ECO 5)</div>
+    <div class="course locked" data-id="lenguaje_ii" data-prereq="lenguaje_i">Lenguaje II (HUM 4)</div>
+    <div class="course locked" data-id="curso_bloque_ciencias_sociales" data-prereq="lenguaje_ii">Curso bloque Ciencias Sociales (CCSS 4)</div>
   </div>
 
   <div class="semester">
