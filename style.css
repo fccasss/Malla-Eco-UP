@@ -19,7 +19,7 @@ h1 {
 }
 
 .semester {
-  background: #e6f0fa;
+  background: #fffff0;
   padding: 20px;
   border-radius: 15px;
   width: 220px;
@@ -52,7 +52,7 @@ h1 {
   color: white;
   cursor: default;
   box-shadow: none;
-  text-decoration: line-through;
+  text-decoration: line-through !important;
 }
 
 .course.locked {
