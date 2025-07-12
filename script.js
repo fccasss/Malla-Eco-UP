@@ -1,27 +1,33 @@
-// Esperar a que el DOM cargue completamente
 document.addEventListener("DOMContentLoaded", () => {
   const courses = document.querySelectorAll(".course");
 
   courses.forEach(course => {
     course.addEventListener("click", () => {
-      // Si el curso está bloqueado, no hace nada
       if (course.classList.contains("locked")) return;
-
-      // Si ya está completado, tampoco hace nada
       if (course.classList.contains("completed")) return;
 
-      // Marcar como completado
+      // Marcar como completado visualmente
       course.classList.add("completed");
 
-      // Buscar los cursos que dependen de este
-      const courseId = course.getAttribute("data-id");
+      // Obtener ID del curso completado
+      const courseId = course.dataset.id;
 
-      const dependents = document.querySelectorAll(`.course[data-prereq="${courseId}"]`);
-      dependents.forEach(dep => {
-        // Desbloquear el curso dependiente
-        dep.classList.remove("locked");
+      // Buscar cursos dependientes
+      document.querySelectorAll(".course.locked").forEach(dep => {
+        const prereqRaw = dep.getAttribute("data-prereq");
+        if (!prereqRaw) return;
+
+        const prereqs = prereqRaw.split(",").map(p => p.trim());
+
+        const allMet = prereqs.every(prereqId => {
+          const prereqElement = document.querySelector(`.course[data-id="${prereqId}"]`);
+          return prereqElement && prereqElement.classList.contains("completed");
+        });
+
+        if (allMet) {
+          dep.classList.remove("locked");
+        }
       });
     });
   });
 });
-
