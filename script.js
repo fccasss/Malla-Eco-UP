@@ -1,31 +1,46 @@
 document.addEventListener("DOMContentLoaded", () => {
   const courses = document.querySelectorAll(".course");
 
+  // Manejo de clic en cursos
   courses.forEach(course => {
     course.addEventListener("click", () => {
+      // Si está bloqueado, no hacer nada
       if (course.classList.contains("locked")) return;
 
-      // Alternar estado de completado
+      // Alternar el estado "completed"
       course.classList.toggle("completed");
 
-      // Reevaluar todos los cursos bloqueados
-      document.querySelectorAll(".course").forEach(dep => {
-        const prereqRaw = dep.getAttribute("data-prereq");
-        if (!prereqRaw) return;
+      // Recalcular el estado de todos los cursos
+      updateCourseStates();
+    });
+  });
 
-        const prereqs = prereqRaw.split(",").map(p => p.trim());
+  function updateCourseStates() {
+    // Primero, bloquear todos los cursos que tengan prerequisitos
+    document.querySelectorAll(".course[data-prereq]").forEach(course => {
+      course.classList.add("locked");
+    });
+
+    let changed;
+    do {
+      changed = false;
+
+      document.querySelectorAll(".course.locked").forEach(course => {
+        const prereqAttr = course.getAttribute("data-prereq");
+        if (!prereqAttr) return;
+
+        const prereqs = prereqAttr.split(",").map(p => p.trim());
 
         const allMet = prereqs.every(prereqId => {
-          const prereqElement = document.querySelector(`.course[data-id="${prereqId}"]`);
-          return prereqElement && prereqElement.classList.contains("completed");
+          const prereqCourse = document.querySelector(`.course[data-id="${prereqId}"]`);
+          return prereqCourse && prereqCourse.classList.contains("completed");
         });
 
         if (allMet) {
-          dep.classList.remove("locked");
-        } else {
-          dep.classList.add("locked");
+          course.classList.remove("locked");
+          changed = true; // Hubo un cambio, se seguirá iterando
         }
       });
-    });
-  });
+    } while (changed);
+  }
 });
