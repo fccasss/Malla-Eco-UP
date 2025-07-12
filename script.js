@@ -38,29 +38,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const creditMet = totalCredits >= reqCredits;
 
-      // Bloqueo y desbloqueo
-      if (prereqsMet && creditMet) {
-        course.classList.remove("locked");
-      } else {
-        if (!isCompleted) {
+      // ✅ CORREGIDO: No volver a bloquear un curso que ya está completado
+      if (!isCompleted) {
+        if (prereqsMet && creditMet) {
+          course.classList.remove("locked");
+        } else {
           course.classList.add("locked");
         }
       }
 
       // Si ya no cumple, desmarcar el curso
-      if (!prereqsMet || !creditMet) {
-        if (isCompleted) {
-          course.classList.remove("completed");
-        }
+      if (( !prereqsMet || !creditMet ) && isCompleted) {
+        course.classList.remove("completed");
       }
     });
   }
 
-  // ✅ Permitir quitar completed aunque esté locked
+  // ✅ Permitir quitar "completed" aunque esté "locked"
   courses.forEach(course => {
     course.addEventListener("click", () => {
       if (course.classList.contains("locked") && !course.classList.contains("completed")) return;
-
       course.classList.toggle("completed");
       updateUnlocking();
     });
