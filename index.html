@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Malla Economía</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Malla Curricular - Economía</h1>
+  <div class="container">
+    <!-- 1er Semestre -->
+    <div class="semester">
+      <h2>1° Semestre</h2>
+      <div class="course" data-id="eco1">Economía General I</div>
+      <div class="course" data-id="mat1">Matemáticas I</div>
+    </div>
+
+    <!-- 2do Semestre -->
+    <div class="semester">
+      <h2>2° Semestre</h2>
+      <div class="course locked" data-id="eco2" data-prereq="eco1">Economía General II</div>
+      <div class="course locked" data-id="mat2" data-prereq="mat1">Matemáticas II</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
