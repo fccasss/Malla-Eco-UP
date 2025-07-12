@@ -1,26 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
   const courses = document.querySelectorAll(".course");
 
-  // Manejo de clic en cursos
+  // Manejo de clic
   courses.forEach(course => {
     course.addEventListener("click", () => {
-      // Si está bloqueado, no hacer nada
       if (course.classList.contains("locked")) return;
 
-      // Alternar el estado "completed"
       course.classList.toggle("completed");
 
-      // Recalcular el estado de todos los cursos
       updateCourseStates();
     });
   });
 
   function updateCourseStates() {
-    // Primero, bloquear todos los cursos que tengan prerequisitos
+    // Reiniciar: bloquear todos con prerequisitos
     document.querySelectorAll(".course[data-prereq]").forEach(course => {
       course.classList.add("locked");
     });
 
+    // Repetir desbloqueo mientras haya cambios
     let changed;
     do {
       changed = false;
@@ -38,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (allMet) {
           course.classList.remove("locked");
-          changed = true; // Hubo un cambio, se seguirá iterando
+          changed = true;
         }
       });
     } while (changed);
