@@ -40,12 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // ✅ Si no cumple requisitos, desmarcar y bloquear
       if (!prereqsMet || !creditMet) {
-        if (isCompleted) {
-          course.classList.remove("completed");
-        }
+        course.classList.remove("completed");
         course.classList.add("locked");
-        return;
-      }
+    } else if (!isCompleted) {
+       course.classList.remove("locked");
+        }
+
 
       // ✅ Si cumple requisitos y no está completado, desbloquear
       if (!isCompleted) {
