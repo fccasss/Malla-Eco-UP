@@ -1,41 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
   const courses = document.querySelectorAll(".course");
 
-  function updateCourseLocks() {
-    document.querySelectorAll(".course").forEach(course => {
-      const prereqRaw = course.getAttribute("data-prereq");
-      if (!prereqRaw) return;
+  function isCompleted(courseId) {
+    const course = document.querySelector(`.course[data-id="${courseId}"]`);
+    return course && course.classList.contains("completed");
+  }
 
-      const prereqs = prereqRaw.split(",").map(p => p.trim());
+  function checkPrereqs(course) {
+    const prereqRaw = course.getAttribute("data-prereq");
+    if (!prereqRaw) return true;
 
-      const allMet = prereqs.every(prereqId => {
-        const prereqElement = document.querySelector(`.course[data-id="${prereqId}"]`);
-        return prereqElement && prereqElement.classList.contains("completed");
-      });
+    const prereqs = prereqRaw.split(",").map(p => p.trim());
+    return prereqs.every(id => isCompleted(id));
+  }
 
-      if (allMet) {
-        course.classList.remove("locked");
-      } else {
-        course.classList.add("locked");
-        course.classList.remove("completed"); // Se quita si ya no cumple
+  function updateLocks() {
+    const allCourses = document.querySelectorAll(".course");
+
+    allCourses.forEach(course => {
+      const prerequisites = course.dataset.prereq;
+
+      if (prerequisites) {
+        const allMet = checkPrereqs(course);
+
+        if (allMet) {
+          course.classList.remove("locked");
+        } else {
+          course.classList.add("locked");
+          course.classList.remove("completed");
+        }
       }
     });
   }
 
+  function onCourseClick(e) {
+    const course = e.target;
+    if (course.classList.contains("locked")) return;
+
+    // Toggle completado
+    if (course.classList.contains("completed")) {
+      course.classList.remove("completed");
+    } else {
+      course.classList.add("completed");
+    }
+
+    // Actualizar bloqueos en cascada
+    updateLocks();
+  }
+
   courses.forEach(course => {
-    course.addEventListener("click", () => {
-      if (course.classList.contains("locked")) return;
-
-      // Alternar completado
-      if (course.classList.contains("completed")) {
-        course.classList.remove("completed");
-      } else {
-        course.classList.add("completed");
-      }
-
-      updateCourseLocks();
-    });
+    course.addEventListener("click", onCourseClick);
   });
 
-  updateCourseLocks(); // Inicializar al cargar
+  updateLocks(); // al inicio
 });
