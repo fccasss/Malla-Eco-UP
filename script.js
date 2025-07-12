@@ -1,56 +1,61 @@
 document.addEventListener("DOMContentLoaded", () => {
   const courses = document.querySelectorAll(".course");
 
-  function isCompleted(courseId) {
-    const course = document.querySelector(`.course[data-id="${courseId}"]`);
-    return course && course.classList.contains("completed");
-  }
+  function updateUnlocking() {
+    courses.forEach(course => {
+      if (!course.classList.contains("locked")) return;
+      const prereqRaw = course.getAttribute("data-prereq");
+      if (!prereqRaw) return;
 
-  function checkPrereqs(course) {
-    const prereqRaw = course.getAttribute("data-prereq");
-    if (!prereqRaw) return true;
+      const prereqs = prereqRaw.split(",").map(p => p.trim());
+      const allMet = prereqs.every(id => {
+        const prereq = document.querySelector(`.course[data-id="${id}"]`);
+        return prereq && prereq.classList.contains("completed");
+      });
 
-    const prereqs = prereqRaw.split(",").map(p => p.trim());
-    return prereqs.every(id => isCompleted(id));
-  }
+      if (allMet) {
+        course.classList.remove("locked");
+      }
+    });
 
-  function updateLocks() {
-    const allCourses = document.querySelectorAll(".course");
+    // También bloquear si se desmarcaron prerequisitos
+    courses.forEach(course => {
+      const prereqRaw = course.getAttribute("data-prereq");
+      if (!prereqRaw) return;
 
-    allCourses.forEach(course => {
-      const prerequisites = course.dataset.prereq;
+      const prereqs = prereqRaw.split(",").map(p => p.trim());
+      const allMet = prereqs.every(id => {
+        const prereq = document.querySelector(`.course[data-id="${id}"]`);
+        return prereq && prereq.classList.contains("completed");
+      });
 
-      if (prerequisites) {
-        const allMet = checkPrereqs(course);
-
-        if (allMet) {
-          course.classList.remove("locked");
-        } else {
-          course.classList.add("locked");
-          course.classList.remove("completed");
-        }
+      if (!allMet && !course.classList.contains("locked")) {
+        course.classList.add("locked");
+        course.classList.remove("completed");
       }
     });
   }
 
-  function onCourseClick(e) {
-    const course = e.target;
-    if (course.classList.contains("locked")) return;
-
-    // Toggle completado
-    if (course.classList.contains("completed")) {
-      course.classList.remove("completed");
-    } else {
-      course.classList.add("completed");
-    }
-
-    // Actualizar bloqueos en cascada
-    updateLocks();
+  function updateCredits() {
+    let total = 0;
+    document.querySelectorAll(".course.completed").forEach(course => {
+      const credits = parseInt(course.getAttribute("data-credits")) || 0;
+      total += credits;
+    });
+    document.getElementById("creditos-acumulados").textContent = `Créditos acumulados: ${total}`;
   }
 
   courses.forEach(course => {
-    course.addEventListener("click", onCourseClick);
+    course.addEventListener("click", () => {
+      if (course.classList.contains("locked")) return;
+
+      course.classList.toggle("completed");
+      updateUnlocking();
+      updateCredits();
+    });
   });
 
-  updateLocks(); // al inicio
+  // Iniciar estado
+  updateUnlocking();
+  updateCredits();
 });
