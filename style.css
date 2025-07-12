@@ -80,3 +80,9 @@ h1 {
   overflow-x: auto;
   width: 100vw;
 }
+.course.locked.completed {
+  background: #66cc99;
+  color: white;
+  cursor: pointer;
+  text-decoration: line-through;
+}
