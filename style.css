@@ -1,13 +1,13 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #d3daf5;
+  font-family: 'The Hand Blank', sans-serif;
+  background: #ffffff;
   margin: 0;
   padding: 20px;
   text-align: center;
 }
 
 h1 {
-  color: #26597a;
+  color: #003366;
   margin-bottom: 40px;
 }
 
@@ -19,20 +19,20 @@ h1 {
 }
 
 .semester {
-  background: #80b0d1;
+  background: #e6f0fa;
   padding: 20px;
   border-radius: 15px;
   width: 220px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .semester h2 {
-  color: #496aa3;
+  color: #003366;
   margin-bottom: 15px;
 }
 
 .course {
-  background: #568da8;
+  background: #336699;
   color: white;
   margin: 10px 0;
   padding: 12px;
@@ -40,7 +40,7 @@ h1 {
   cursor: pointer;
   transition: 0.3s ease;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .course:hover {
@@ -48,7 +48,7 @@ h1 {
 }
 
 .course.completed {
-  background: #81c7bd; /* verde agua */
+  background: #66cc99; /* verde claro */
   color: white;
   cursor: default;
   box-shadow: none;
@@ -56,8 +56,5 @@ h1 {
 }
 
 .course.locked {
-  background: #d3d3d3;
-  color: #666;
-  cursor: not-allowed;
-  box-shadow: inset 0 0 4px rgba(0,0,0,0.1);
-}
+  backgr
+
