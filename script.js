@@ -11,11 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return total;
   }
 
+  function updateCreditsDisplay(total) {
+    if (creditDisplay) {
+      creditDisplay.textContent = `Créditos acumulados: ${total}`;
+    }
+  }
+
   function updateUnlocking() {
     const totalCredits = getTotalCredits();
-    if (creditDisplay) {
-      creditDisplay.textContent = `Créditos acumulados: ${totalCredits}`;
-    }
+    updateCreditsDisplay(totalCredits);
 
     courses.forEach(course => {
       const isCompleted = course.classList.contains("completed");
@@ -34,24 +38,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const creditMet = totalCredits >= reqCredits;
 
-      if (prereqsMet && creditMet && !isCompleted) {
+      // Bloqueo y desbloqueo
+      if (prereqsMet && creditMet) {
         course.classList.remove("locked");
-      } else if (!prereqsMet || !creditMet) {
-        course.classList.add("locked");
-        if (!isCompleted) course.classList.remove("completed");
+      } else {
+        if (!isCompleted) {
+          course.classList.add("locked");
+        }
+      }
+
+      // Si ya no cumple, desmarcar el curso
+      if (!prereqsMet || !creditMet) {
+        if (isCompleted) {
+          course.classList.remove("completed");
+        }
       }
     });
   }
 
+  // ✅ Permitir quitar completed aunque esté locked
   courses.forEach(course => {
     course.addEventListener("click", () => {
-      if (course.classList.contains("locked")) return;
+      if (course.classList.contains("locked") && !course.classList.contains("completed")) return;
 
       course.classList.toggle("completed");
       updateUnlocking();
     });
   });
 
-  // Al cargar
+  // Al iniciar
   updateUnlocking();
 });
