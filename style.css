@@ -75,3 +75,8 @@ h1 {
   min-width: 220px;               /* ancho mínimo para que no colapse */
   flex-shrink: 0;
 }
+
+.scroll-wrapper {
+  overflow-x: auto;
+  width: 100vw;
+}
