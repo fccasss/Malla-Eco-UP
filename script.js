@@ -1,3 +1,4 @@
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const courses = document.querySelectorAll(".course");
   const creditDisplay = document.getElementById("creditos-acumulados");
@@ -22,9 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     while (changes) {
       changes = false;
-
-      const currentCredits = getTotalCredits();
-      updateCreditsDisplay(currentCredits);
+      const totalCredits = getTotalCredits();
+      updateCreditsDisplay(totalCredits);
 
       courses.forEach(course => {
         const isCompleted = course.classList.contains("completed");
@@ -41,10 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        const creditMet = currentCredits >= reqCredits;
+        const creditMet = totalCredits >= reqCredits;
 
+        // Bloquear si no cumple requisitos
         if (!prereqsMet || !creditMet) {
-          if (course.classList.contains("completed")) {
+          if (isCompleted) {
             course.classList.remove("completed");
             changes = true;
           }
@@ -52,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
             course.classList.add("locked");
             changes = true;
           }
-        } else if (!isCompleted) {
-          if (course.classList.contains("locked")) {
+        } else {
+          // Desbloquear si cumple y no está completado
+          if (!isCompleted && course.classList.contains("locked")) {
             course.classList.remove("locked");
             changes = true;
           }
@@ -70,5 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Inicialización al cargar
   updateUnlocking();
 });
+</script>
