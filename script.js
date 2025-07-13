@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     while (changes) {
       changes = false;
 
-      updateCreditsDisplay(getTotalCredits());
+      const currentCredits = getTotalCredits();
+      updateCreditsDisplay(currentCredits);
 
       courses.forEach(course => {
         const isCompleted = course.classList.contains("completed");
@@ -40,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
-        const currentCredits = getTotalCredits();
         const creditMet = currentCredits >= reqCredits;
 
         if (!prereqsMet || !creditMet) {
