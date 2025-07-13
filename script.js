@@ -1,78 +1,95 @@
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const courses = document.querySelectorAll(".course");
-  const creditDisplay = document.getElementById("creditos-acumulados");
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #ffffff;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  color: #002f6c;
+}
 
-  function getTotalCredits() {
-    let total = 0;
-    document.querySelectorAll(".course.completed").forEach(course => {
-      const credits = parseInt(course.getAttribute("data-credits")) || 0;
-      total += credits;
-    });
-    return total;
-  }
+h1 {
+  color: #002f6c;
+  margin-bottom: 40px;
+}
 
-  function updateCreditsDisplay(total) {
-    if (creditDisplay) {
-      creditDisplay.textContent = `Créditos acumulados: ${total}`;
-    }
-  }
+#creditos-acumulados {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
 
-  function updateUnlocking() {
-    let changes = true;
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 40px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  max-width: 100vw;
+}
 
-    while (changes) {
-      changes = false;
-      const totalCredits = getTotalCredits();
-      updateCreditsDisplay(totalCredits);
+.semester {
+  background: #e6e9ed;
+  padding: 20px;
+  border-radius: 15px;
+  width: 240px;
+  box-shadow: 0 4px 10px rgba(0, 47, 108, 0.05);
+  flex-shrink: 0;
+}
 
-      courses.forEach(course => {
-        const isCompleted = course.classList.contains("completed");
-        const prereqRaw = course.getAttribute("data-prereq");
-        const reqCredits = parseInt(course.getAttribute("data-req-credits")) || 0;
+.semester h2 {
+  color: #002f6c;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccd6e0;
+  padding-bottom: 6px;
+}
 
-        let prereqsMet = true;
+/* 🔓 Cursos desbloqueados */
+.course {
+  background: #002f6c; /* azul UP */
+  color: white;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: bold;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
 
-        if (prereqRaw) {
-          const prereqs = prereqRaw.split(",").map(p => p.trim());
-          prereqsMet = prereqs.every(id => {
-            const prereq = document.querySelector(`.course[data-id="${id}"]`);
-            return prereq && prereq.classList.contains("completed");
-          });
-        }
+.course:hover {
+  transform: scale(1.02);
+}
 
-        const creditMet = totalCredits >= reqCredits;
+/* ✅ Cursos completados */
+.course.completed {
+  background: #00a6d6 !important; /* celeste UP */
+  color: white !important;
+  text-decoration: line-through;
+  cursor: default;
+  box-shadow: none;
+}
 
-        // Bloquear si no cumple requisitos
-        if (!prereqsMet || !creditMet) {
-          if (isCompleted) {
-            course.classList.remove("completed");
-            changes = true;
-          }
-          if (!course.classList.contains("locked")) {
-            course.classList.add("locked");
-            changes = true;
-          }
-        } else {
-          // Desbloquear si cumple y no está completado
-          if (!isCompleted && course.classList.contains("locked")) {
-            course.classList.remove("locked");
-            changes = true;
-          }
-        }
-      });
-    }
-  }
+/* 🔒 Cursos bloqueados */
+.course.locked {
+  background: #dbe2ea !important; /* gris claro */
+  color: #888 !important;
+  cursor: not-allowed;
+  border: 1px dashed #a3b3c3;
+  box-shadow: none;
+}
 
-  courses.forEach(course => {
-    course.addEventListener("click", () => {
-      if (course.classList.contains("locked") && !course.classList.contains("completed")) return;
-      course.classList.toggle("completed");
-      updateUnlocking();
-    });
-  });
+.course.locked:hover {
+  transform: none;
+}
 
-  // Inicialización al cargar
-  updateUnlocking();
-});
-</script>
+/* 🔒✅ Si curso está marcado pero se volvió a bloquear */
+.course.locked.completed {
+  background: #00a6d6 !important;
+  color: white !important;
+  text-decoration: line-through;
+}
+
+/* Scroll horizontal si hay muchos semestres */
+.scroll-wrapper {
+  overflow-x: auto;
+  width: 100vw;
+}
